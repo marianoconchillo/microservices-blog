@@ -3,9 +3,16 @@ import { useEffect, useState } from "react";
 import { CommentCreate } from "./CommentCreate";
 import { CommentList } from "./CommentList";
 
+interface Comment {
+    id: string;
+    content: string;
+    status: "approved" | "rejected" | "pending";
+}
+
 interface Post {
     id: string;
     title: string;
+    comments: Comment[];
 }
 
 export const PostList = () => {
@@ -13,7 +20,7 @@ export const PostList = () => {
 
     useEffect(() => {
         const getPosts = async () => {
-            const { data } = await axios.get("http://localhost:4000/posts");
+            const { data } = await axios.get("http://localhost:4002/posts");
             setPosts(data);
         };
 
@@ -28,7 +35,7 @@ export const PostList = () => {
                     key={post.id}
                 >
                     <div className="font-bold text-xl mb-2">{post.title}</div>
-                    <CommentList postId={post.id} />
+                    <CommentList comments={post.comments} />
                     <CommentCreate postId={post.id} />
                 </div>
             ))}

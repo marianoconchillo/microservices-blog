@@ -1,33 +1,24 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-
 interface Comment {
-    commentId: string;
+    id: string;
     content: string;
+    status: "approved" | "rejected" | "pending";
 }
 
 interface Props {
-    postId: string;
+    comments: Comment[];
 }
 
-export const CommentList = ({ postId }: Props) => {
-    const [comments, setComments] = useState<Comment[]>([]);
-
-    useEffect(() => {
-        const getComment = async () => {
-            const { data } = await axios.get(
-                `http://localhost:4001/posts/${postId}/comments`
-            );
-            setComments(data);
-        };
-
-        getComment();
-    }, []);
-
+export const CommentList = ({ comments }: Props) => {
     return (
         <ul className="list-disc list-inside">
             {Object.values(comments).map((comment: Comment) => (
-                <li key={comment.commentId}>{comment.content}</li>
+                <li key={comment.id}>
+                    {comment.status === "approved"
+                        ? `${comment.content}`
+                        : comment.status === "pending"
+                        ? `This comment is awaiting moderation`
+                        : `This comment has been rejected`}
+                </li>
             ))}
         </ul>
     );
