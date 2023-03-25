@@ -40,5 +40,6 @@ app.post("/events", (req, res) => {
 const PORT = 4000;
 
 app.listen(PORT, () => {
+    console.log("Version: latest")
     console.log(`Server running on PORT ${PORT}`);
 });
